@@ -196,7 +196,10 @@ MD5_SUM=$(md5sum ${RELEASE_ASSET_PATH} | cut -d ' ' -f 1)
 SHA256_SUM=$(sha256sum ${RELEASE_ASSET_PATH} | cut -d ' ' -f 1)
 
 # uploader command 
-BASE_UPLOADER_COMMAND=(github-assets-uploader -logtostderr -repo "${RELEASE_REPO}" -token "${INPUT_GITHUB_TOKEN}" -tag="${RELEASE_TAG}" -releasename="${RELEASE_NAME}" -retry "${INPUT_RETRY}")
+BASE_UPLOADER_COMMAND=(github-assets-uploader -logtostderr -repo "${RELEASE_REPO}" -token "${INPUT_GITHUB_TOKEN}" -tag="${RELEASE_TAG}" -retry "${INPUT_RETRY}")
+if [ ! -z "${RELEASE_NAME}" ]; then
+  BASE_UPLOADER_COMMAND+=(-releasename="${RELEASE_NAME}")
+fi
 if [ "${GITHUB_SERVER_URL}" != 'https://github.com' ]; then
   BASE_UPLOADER_COMMAND+=(-baseurl "${GITHUB_SERVER_URL}")
 fi
